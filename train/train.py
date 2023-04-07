@@ -1,8 +1,11 @@
 import torch
 from torch import nn, optim
 from longformer_model.longformer_for_sequence_classification import LongformerForSequenceClassification
+from longformer_model.custom_longformer import CustomLongformer
+from longformer_model.longformer_classification_head import LongformerClassificationHead
 from data.data_processor import create_dataloaders, load_data
 from train.model_utils import load_model, save_model
+from transformers import LongformerTokenizer
 from tqdm import tqdm
 
 
@@ -70,17 +73,3 @@ def train_model(model, train_loader, valid_loader, device, epochs, learning_rate
         print(f"Epoch: {epoch + 1}/{epochs}, Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}, Accuracy: {accuracy:.2f}")
 
         save_model(model, f"longformer_sentiment_epoch_{epoch + 1}.pth")
-
-
-if __name__ == "__main__":
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    train_texts, train_labels, valid_texts, valid_labels, test_texts, test_labels = load_split_data()
-    batch_size = 8
-    train_loader, valid_loader, test_loader = create_dataloaders(train_texts, train_labels, valid_texts, valid_labels, test_texts, test_labels, batch_size)
-
-    model = load_model(LongformerForSequenceClassification, "allenai/longformer-base-4096", device)
-    epochs = 3
-    learning_rate = 1e-5
-
-    train_model(model, train_loader, valid_loader, device, epochs, learning_rate)
