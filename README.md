@@ -47,6 +47,7 @@ The project structure is as follows:
 6. [Evaluation](#evaluation)
 7. [Prediction](#prediction)
 8. [License](#license)
+9. [Author](#author)
 
 
 ## Components
